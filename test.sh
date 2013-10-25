@@ -7,6 +7,7 @@ cleanup() {
 trap cleanup INT TERM EXIT
 
 
+# Regression tests.
 ./generate_hashring_test_data.py nodes keys
 go build -o test_go_hashring test_go_hashring.go
 
@@ -15,5 +16,10 @@ go build -o test_go_hashring test_go_hashring.go
 
 diff python_results go_results
 
+# Unit tests.
+cd hashring
+go test
+
 cleanup
+
 
