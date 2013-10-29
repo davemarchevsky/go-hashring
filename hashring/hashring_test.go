@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+const expected_variation float64 = 0.25
+
 func _getRandomStrings(n int) []string {
 	words := make([]string, n)
 	for i := 0; i < n; i++ {
@@ -31,7 +33,6 @@ func _checkNodeBalance(t *testing.T, ring *HashRing, keys []string) {
 	nodes := ring.Nodes
 	num_keys := len(keys)
 	ideal_count := int(float32(num_keys) / float32(len(nodes)))
-	expected_variation := 0.25 // Usually more like 10%
 	delta := int(expected_variation * float64(ideal_count))
 
 	countByNode := make(map[string]int)
@@ -68,7 +69,6 @@ func TestDistributionAfterAddingNode(t *testing.T) {
 	// Check how many keys moved nodes.
 	moved_keys := 0
 	expected_to_move := int(float32(num_keys) / float32(len(nodes)))
-	expected_variation := 0.25
 	delta := int(expected_variation * float64(expected_to_move))
 	for _, key := range keys {
 		node := ring.GetNode(key)
