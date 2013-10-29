@@ -42,7 +42,6 @@ func _checkNodeBalance(t *testing.T, ring *HashRing, keys []string) {
 	}
 
 	for node, count := range countByNode {
-		//fmt.Printf("Node %s: %d\n", node, count)
 		if int(math.Abs(float64(count-ideal_count))) > delta {
 			t.Errorf("%s not well balanced: got %d, expected %d +/- %d", node, count, ideal_count, delta)
 		}
