@@ -1,24 +1,19 @@
-package main
+package hashring
 
 import (
-	"./hashring"
 	"bufio"
-	"flag"
 	"fmt"
 	"os"
+	"testing"
 )
 
-func main() {
-	flag.Parse()
-	if len(flag.Args()) < 2 {
-		fmt.Printf("Usage: ./test_go_hashring nodes_file keys_file\n")
-		return
-	}
-	nodesFile, _ := os.Open(flag.Arg(0))
-	keysFile, _ := os.Open(flag.Arg(1))
-
+func TestHashring(t *testing.T) {
+	nodesFile, _ := os.Open("nodes")
+	keysFile, _ := os.Open("keys")
+	
 	nodesReader := bufio.NewReader(nodesFile)
 	keysReader := bufio.NewReader(keysFile)
+
 
 	nodes := []string{}
 	keys := []string{}
@@ -39,8 +34,17 @@ func main() {
 		keys = append(keys, text[:len(text)-1])
 	}
 
-	ring := hashring.New(nodes)
-	for i := range keys {
-		fmt.Printf("%s -> %s\n", keys[i], ring.GetNode(keys[i]))
+
+	w, err := os.Create("go_results")
+	if err != nil {
+		t.Error("failed to create write file")
+		return
 	}
+
+	ring := New(nodes)
+	for i := range keys {
+		fmt.Fprintf(w, "%s -> %s\n", keys[i], ring.GetNode(keys[i]))
+	}
+
 }
+
