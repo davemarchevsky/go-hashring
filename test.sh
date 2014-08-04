@@ -8,10 +8,8 @@ trap cleanup INT TERM EXIT
 
 
 ./generate_hashring_test_data.py nodes keys
-go build -o test_go_hashring test_go_hashring.go
-
 ./test_python_hashring.py nodes keys > python_results
-./test_go_hashring nodes keys > go_results
+go test
 
 diff python_results go_results
 
